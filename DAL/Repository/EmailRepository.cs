@@ -26,7 +26,7 @@ namespace CommVill.DAL.Repository
             try
             {
                 var activeSmtpEmailData = await _context.EmailConfigs.FirstOrDefaultAsync(x => x.Active == true);
-                var smtpUsername = activeSmtpEmailData.Email;
+                string? smtpUsername = activeSmtpEmailData.Email;
                 var smtpPassword = activeSmtpEmailData.Password;
                 var cc = activeSmtpEmailData.EmailCC;
                 using var client = new SmtpClient(activeSmtpEmailData.SmtpServer);

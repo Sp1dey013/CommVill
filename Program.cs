@@ -41,7 +41,7 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Kntrol Partner",
+    options.AddPolicy("Community Village",
     builder =>
     {
         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
@@ -77,7 +77,7 @@ using (var scope = app.Services.CreateScope())
     await context.Database.MigrateAsync();
 }
 
-app.UseCors("Kntrol Partner");
+app.UseCors("Community Village");
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseRouting();

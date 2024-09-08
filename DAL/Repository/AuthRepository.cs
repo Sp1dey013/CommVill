@@ -1,6 +1,8 @@
 ﻿using CommVill.DAL.Interface;
 using CommVill.Models;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,43 +23,40 @@ namespace CommVill.DAL.Repository
             _logger = logger;
         }
 
-        public async Task<JwtSecurityToken> GenerateJWTToken(string email)
+        public async Task<JwtSecurityToken?> GenerateJWTToken(string email)
         {
             try
             {
-                var authuser = await _userManager.FindByEmailAsync(email);
-
-                if (authuser == null)
+                var authUser = await _userManager.FindByEmailAsync(email);
+                if (authUser == null)
                 {
-                    _logger.LogWarning("User not found with email: {Email}", email);
+                    _logger.LogWarning($"User not found with email: {email}");
                     return null;
                 }
-
-                var userRoles = await _userManager.GetRolesAsync(authuser);
-
+                var userRoles = await _userManager.GetRolesAsync(authUser);
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, authuser.Email),
+                    new Claim(ClaimTypes.Email, authUser.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
-
                 authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
-
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
+                if (!double.TryParse(_configuration["JWT:TokenExpiryMinutes"], out double tokenExpiryMinutes))
+                {
+                    tokenExpiryMinutes = 5;
+                }
                 var token = new JwtSecurityToken(
                     issuer: _configuration["JWT:ValidIssuer"],
                     audience: _configuration["JWT:ValidAudience"],
-                    expires: DateTime.UtcNow.AddMinutes(double.Parse(_configuration["JWT:TokenExpiryMinutes"])), // Configurable expiry
+                    expires: DateTime.UtcNow.AddMinutes(tokenExpiryMinutes),
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
-
                 return token;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "An error occurred while generating the JWT token for email: {Email}", email);
+                _logger.LogError(e, $"An error occurred while generating the JWT token for email: {email}");
                 return null;
             }
         }
