@@ -1,18 +1,22 @@
 ﻿namespace CommVill.Models
 {
-    public class Post
+    public class PostText
     {
-        public Guid PostId { get; set; }
-        public string? PostData { get; set; }
+        public Guid PostTextId { get; set; }
+        public string? PostTextData { get; set; }
         public long Like { get; set; }
+        public DateTime PostTime { get; set; }
         public Guid CommunityUserId { get; set; }
         public Guid UserId { get; set; }
     }
-    class Comment
+    public class PostImage
     {
-        public Guid CommnetId { get; set; }
-        public string? CommentData { get; set; }
-        public Guid PostId { get; set; }
-        public Guid PrimaryCommentId { get; set; }
+        public Guid PostImageId { get; set; }
+        public string? PostTextData { get; set; }
+        public long Like { get; set; }
+        public DateTime PostTime { get; set; }
+        public Guid CommunityUserId { get; set; }
+        public Guid UserId { get; set; }
     }
+    
 }

@@ -15,7 +15,6 @@ namespace CommVill.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AuthController> _logger;
-        private readonly CommVillDBContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailRepository _emailRepository;
         private readonly INVelocityHelper _nVelocityHelper;
@@ -26,7 +25,6 @@ namespace CommVill.Controllers
             UserManager<ApplicationUser> userManager,
             IUserRepository userRepository,
             ILogger<AuthController> logger,
-            CommVillDBContext context,
             RoleManager<IdentityRole> roleManager,
             IEmailRepository emailRepository,
             INVelocityHelper nVelocityHelper,
@@ -34,7 +32,6 @@ namespace CommVill.Controllers
         {
             _userManager = userManager;
             _logger = logger;
-            _context = context;
             _roleManager = roleManager;
             _emailRepository = emailRepository;
             _nVelocityHelper = nVelocityHelper;
@@ -76,7 +73,7 @@ namespace CommVill.Controllers
         }
 
         [HttpPost("RegisterUser")]
-        public async Task<IActionResult> RegisterPartner(User user)
+        public async Task<IActionResult> RegisterUser(User user)
         {
             try
             {
@@ -90,7 +87,6 @@ namespace CommVill.Controllers
                 {
                     return BadRequest("User creation failed");
                 }
-
                 if (!string.IsNullOrEmpty(newUser.Errors))
                 {
                     return BadRequest(newUser.Errors);

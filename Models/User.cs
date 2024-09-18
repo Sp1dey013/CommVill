@@ -12,5 +12,7 @@ namespace CommVill.Models
         public string? Email { get; set; }
         public string? Password { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; }
+        public DateTime UserCreationTime { get; set; }
+        public bool IsActive { get; set; }
     }
 }
