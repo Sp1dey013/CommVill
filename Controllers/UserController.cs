@@ -60,7 +60,7 @@ namespace CommVill.Controllers
         {
             try
             {
-                await _userRepository.ActiveInactive(emial, isActive);
+                await _userRepository.ActiveInactiveUser(emial, isActive);
             }
             catch (Exception e) { _logger.LogError($"{e}"); }
         }

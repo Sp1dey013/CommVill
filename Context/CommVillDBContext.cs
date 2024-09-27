@@ -11,6 +11,10 @@ namespace CommVill.Controllers
         {
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Community> Communities {get; set;}
+        public DbSet<CommunityUser> CommunityUsers {get; set;}
+        public DbSet<Post> Posts {get; set;}
         public DbSet<EmailConfig> EmailConfigs { get; set; }
         public DbSet<EmailData> EmailDatas { get; set; }
         
