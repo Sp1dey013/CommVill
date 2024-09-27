@@ -38,6 +38,7 @@ namespace CommVill.DAL.Repository
                 else
                 {
                     user.UserId = new Guid(newUser.Id);
+                    user.UserCreationTime = DateTime.UtcNow;
                     user.Password = null;
                     await _context.Users.AddAsync(user);
                     await _context.SaveChangesAsync();
@@ -73,7 +74,7 @@ namespace CommVill.DAL.Repository
         {
             try
             {
-                _context.UpdateRange(user);
+                _context.Users.UpdateRange(user);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e) { _logger.LogError($"Error occurred while updateing user: {e}"); }
@@ -90,7 +91,7 @@ namespace CommVill.DAL.Repository
             }
             catch (Exception e) { _logger.LogError($"e"); }
         }
-        public async Task ActiveInactive(string email, bool isActive)
+        public async Task ActiveInactiveUser(string email, bool isActive)
         {
             try
             {

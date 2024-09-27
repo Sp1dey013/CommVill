@@ -73,8 +73,8 @@ else
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CommVillDBContext>();
-    await context.Database.EnsureCreatedAsync();
-    await context.Database.MigrateAsync();
+    //await context.Database.EnsureCreatedAsync();
+    //await context.Database.MigrateAsync();
 }
 
 app.UseCors("Community Village");
