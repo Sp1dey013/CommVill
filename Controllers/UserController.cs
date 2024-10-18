@@ -78,9 +78,9 @@ namespace CommVill.Controllers
                 await _userRepository.ChangeUserPassword(user, oldPassword, newPassword);
                 return Ok();
             }
-            catch
+            catch(Exception e)
             {
-                _logger.LogError("An error occured while changeing password.");
+                _logger.LogError($"An error occured while changeing password: {e}.");
             }
             return BadRequest();
         }

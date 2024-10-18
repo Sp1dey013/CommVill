@@ -16,5 +16,16 @@ namespace CommVill.Controllers
             _logger = logger;
             _communityRepository = communityRepository;
         }
+        [HttpGet("GetAllCommunityUserByUserId")]
+        public async Task<List<CommunityUser> GetAllCommunityUserForUser(Guid userId)
+        {
+            try
+            {
+                return await _communityRepository.GetAllCommunityUserByUserId(userId);
+            }
+            catch(Exception e){_logger.logError($"GetAllCommunityUserForUser: {e}");}
+            return new List<CommunityUser>{};
+        }
+        [HttpGet("GetAllCommunityUserBy")]
     }
 }
